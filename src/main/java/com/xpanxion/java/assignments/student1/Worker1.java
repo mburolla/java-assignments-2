@@ -1,9 +1,7 @@
 package com.xpanxion.java.assignments.student1;
 
 import com.xpanxion.java.assignments.DataAccess;
-import com.xpanxion.java.assignments.model.Cat;
-import com.xpanxion.java.assignments.model.Department;
-import com.xpanxion.java.assignments.model.Product;
+import com.xpanxion.java.assignments.model.*;
 
 import java.text.NumberFormat;
 import java.util.*;
@@ -85,6 +83,48 @@ public class Worker1 {
                 });
         sortedWordMap = new TreeMap<String, Integer>(wordMap);
         System.out.println(sortedWordMap);
+    }
+
+    public void ex8() {
+        var people = DataAccess.getPeople();
+
+        people.forEach(p -> {
+            p.setLastName("null");
+            p.setAge(0);
+            p.setSsn("null");
+        });
+
+        System.out.println(people);
+    }
+
+    public void ex9() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String moneyString;
+        var products = DataAccess.getProducts();
+        var sum = products.stream().map(product -> {
+                    product.setPrice(product.getPrice() + 2.0f);
+                    return product.getPrice();
+                })
+                .reduce(Float::sum);
+        var sumInDollars = formatter.format(sum.get());
+
+        System.out.println(sumInDollars);
+    }
+
+    public void ex10() {
+        ArrayList<PersonCat> petOwners = new ArrayList<>();
+        Map<Integer, Person> personMap = DataAccess.getPeople().stream()
+                .collect(Collectors.toMap(Person::getId, Function.identity()));
+        Map<Integer, Cat> catMap = DataAccess.getCats().stream()
+                .collect(Collectors.toMap(Cat::getId, Function.identity()));
+
+        personMap.forEach((k, v) -> {
+            ArrayList<Cat> cats = new ArrayList<>();
+            cats.add(catMap.get(k));
+            petOwners.add(new PersonCat(v.getId(), v.getFirstName(), cats));
+        });
+
+        System.out.println(petOwners);
     }
 }
 
