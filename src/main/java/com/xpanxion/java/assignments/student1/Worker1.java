@@ -86,6 +86,32 @@ public class Worker1 {
         sortedWordMap = new TreeMap<String, Integer>(wordMap);
         System.out.println(sortedWordMap);
     }
+
+    public void ex8() {
+        var people = DataAccess.getPeople();
+
+        people.forEach(p -> {
+            p.setLastName("null");
+            p.setAge(0);
+            p.setSsn("null");
+        });
+
+        System.out.println(people);
+    }
+
+    public void ex9() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String moneyString;
+        var products = DataAccess.getProducts();
+        var sum = products.stream().map(product -> {
+                    product.setPrice(product.getPrice() + 2.0f);
+                    return product.getPrice();
+                })
+                .reduce(Float::sum);
+        var sumInDollars = formatter.format(sum.get());
+
+        System.out.println(sumInDollars);
+    }
 }
 
 class Sortbyname implements Comparator<Cat> {
