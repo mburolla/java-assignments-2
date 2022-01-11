@@ -21,10 +21,15 @@ public class Worker1 {
 
     public void ex2() {
         var products = DataAccess.getProducts();
-        Map<Integer, Department> departmentMap = DataAccess.getDepartments().stream()
-                .collect(Collectors.toMap(Department::getId, Function.identity()));
 
         products.forEach(p -> p.setDepartmentName("N/A"));
         System.out.println(products);
+    }
+
+    public void ex3() {
+        var products = DataAccess.getProducts();
+
+        var result = products.stream().filter(p -> p.getPrice() >= 10.0);
+        System.out.println(result.collect(Collectors.toList()));
     }
 }
